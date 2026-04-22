@@ -5,6 +5,7 @@ import { ArrowLeft, CheckCircle2 } from "lucide-react";
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
+import { getSiteUrl } from "@/lib/site-url";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -26,7 +27,8 @@ export default function SignupPage() {
         email,
         password,
         options: {
-          data: { full_name: name }
+          data: { full_name: name },
+          emailRedirectTo: `${getSiteUrl()}/auth/confirm`
         }
       });
 

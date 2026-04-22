@@ -78,6 +78,21 @@ For production:
 - Configure Site URL and Redirect URLs correctly.
 - Configure SMTP if you want branded/reliable production emails.
 
+Important for this repo:
+
+- This app now includes an SSR confirmation route at `/auth/confirm`.
+- In Supabase `Auth -> Templates -> Confirm signup`, change the confirmation link to use that route.
+
+Recommended confirm-signup template link:
+
+```html
+<a href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=email">
+  Confirm your mail
+</a>
+```
+
+That follows Supabase's Next.js SSR flow so the token hash is exchanged server-side before redirecting the user into the app.
+
 ## 5. Configure URLs
 
 In `Authentication -> URL Configuration`:
@@ -141,12 +156,23 @@ Usually:
 - missing env vars
 - wrong variable name (`PUBLISHABLE_KEY` vs `ANON_KEY`)
 
+### Signup says it worked but no email arrives
+
+Usually:
+
+- you are using Supabase's built-in email service
+- confirmation email is enabled
+- the recipient is not a pre-authorized/team email address
+
+Per Supabase docs, the built-in email service is not for production and only sends to pre-authorized addresses. For real users, configure custom SMTP.
+
 ### Signup creates user but confirmation email link is wrong
 
 Usually:
 
 - `Site URL` is still `localhost`
 - redirect URLs are not configured
+- confirm-signup template still uses the default link instead of `/auth/confirm`
 
 ### Login works but server-side routes behave like the user is logged out
 
@@ -163,4 +189,3 @@ Usually:
 - email confirmation enabled but SMTP/domain/email delivery is not configured
 
 For a hackathon, disabling confirmation is often the fastest path.
-

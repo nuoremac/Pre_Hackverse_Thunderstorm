@@ -4,12 +4,6 @@ export default function SettingsPage() {
   return (
     <div className="p-8 md:p-10 max-w-[1000px] mx-auto h-full flex flex-col font-sans">
       
-      {/* Header */}
-      <div className="mb-10">
-        <h1 className="text-3xl font-display font-bold text-[var(--ink)] tracking-tight">Settings</h1>
-        <p className="text-sm text-[var(--muted)] mt-1">Manage your account, scheduling preferences, and integrations.</p>
-      </div>
-
       <div className="space-y-10 pb-20">
         
         {/* Section: Profile */}
