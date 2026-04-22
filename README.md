@@ -119,6 +119,6 @@ L'application suit une esthétique **Premium SaaS** :
 ---
 ### Application web déployé
 
-`https://pre-hackverse-thunderstorm.vercel.app`
+[https://pre-hackverse-thunderstorm.vercel.app](https://pre-hackverse-thunderstorm.vercel.app)
 
 
