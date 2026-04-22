@@ -1,12 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
-
-const pageLinks = [
-  { label: "Planner", href: "/planner" },
-  { label: "Dashboard", href: "/dashboard" },
-  { label: "Tasks", href: "/tasks" },
-  { label: "Analytics", href: "/analytics" }
-];
+import { useI18n } from "@/components/i18n/i18n-provider";
 
 const socialLinks = [
   {
@@ -32,6 +28,50 @@ const socialLinks = [
 ];
 
 export function SiteFooter() {
+  const { locale } = useI18n();
+  const copy =
+    locale === "fr"
+      ? {
+          ctaTitle: "Arrêtez de vous battre contre votre calendrier.",
+          ctaTitle2: "Laissez OptiTime s'en charger.",
+          ctaDescription:
+            "Découvrez une couche de planification qui équilibre votre concentration, vos réunions et vos habitudes personnelles de façon intuitive.",
+          ctaButton: "Découvrir la planification intelligente",
+          brandDescription:
+            "Un moteur de planification dynamique pour les étudiants et les équipes qui doivent organiser leur temps autour de vraies contraintes, pas d'agendas idéalisés. Protégez automatiquement votre temps de concentration.",
+          featuresLabel: "Fonctionnalités",
+          connectLabel: "Réseaux",
+          copyright: "© 2026 OptiTime Inc. Défend les emplois du temps partout.",
+          privacy: "Politique de confidentialité",
+          terms: "Conditions d'utilisation",
+          pageLinks: [
+            { label: "Planning", href: "/planner" },
+            { label: "Tableau de bord", href: "/dashboard" },
+            { label: "Tâches", href: "/tasks" },
+            { label: "Analytique", href: "/analytics" }
+          ]
+        }
+      : {
+          ctaTitle: "Stop fighting your calendar.",
+          ctaTitle2: "Let OptiTime handle it.",
+          ctaDescription:
+            "Experience the scheduling layer that works exactly the way you need it to, balancing focus time, meetings, and personal habits intuitively.",
+          ctaButton: "Discover Smart Scheduling",
+          brandDescription:
+            "A dynamic scheduling engine for students and teams who need to plan around real constraints, not idealized calendars. Protect your focus time automatically.",
+          featuresLabel: "Platform Features",
+          connectLabel: "Connect",
+          copyright: "© 2026 OptiTime Inc. Defending schedules everywhere.",
+          privacy: "Privacy Policy",
+          terms: "Terms of Service",
+          pageLinks: [
+            { label: "Planner", href: "/planner" },
+            { label: "Dashboard", href: "/dashboard" },
+            { label: "Tasks", href: "/tasks" },
+            { label: "Analytics", href: "/analytics" }
+          ]
+        };
+
   return (
     <footer className="section-shell !pt-0 mt-12 bg-white relative">
       <div className="mx-auto max-w-7xl pt-16 pb-12">
@@ -40,14 +80,14 @@ export function SiteFooter() {
         <div className="bg-gradient-to-r from-[rgba(21,184,106,0.05)] to-transparent rounded-3xl p-8 md:p-12 mb-20 flex flex-col md:flex-row items-center justify-between gap-10 border border-[rgba(21,184,106,0.15)] shadow-sm">
           <div className="max-w-xl">
             <h3 className="font-display text-4xl font-semibold tracking-[-0.04em] text-[var(--ink)] mb-4 leading-tight">
-              Stop fighting your calendar. <br/>
-              Let OptiTime handle it.
+              {copy.ctaTitle} <br/>
+              {copy.ctaTitle2}
             </h3>
             <p className="text-lg text-[var(--muted)] mb-8">
-              Experience the scheduling layer that works exactly the way you need it to—balancing focus time, meetings, and personal habits intuitively.
+              {copy.ctaDescription}
             </p>
             <a href="/planner" className="btn-primary shadow-xl shadow-[rgba(21,184,106,0.2)] hover:shadow-none hover:scale-[0.98] transition-all">
-              Discover Smart Scheduling
+              {copy.ctaButton}
             </a>
           </div>
           <div className="relative w-full md:w-1/2 flex justify-center">
@@ -67,22 +107,28 @@ export function SiteFooter() {
 
         <div className="grid gap-10 border-t border-[var(--line)] pt-16 md:grid-cols-[1.15fr_0.8fr_1fr]">
           <div className="max-w-md">
-            <p className="font-display text-2xl font-semibold tracking-[-0.05em] text-[var(--ink)] flex items-center gap-2">
-              <span className="w-5 h-5 rounded-[4px] bg-[var(--accent)] inline-block"></span>
+            <div className="font-display text-2xl font-semibold tracking-[-0.05em] text-[var(--ink)] flex items-center gap-2">
+              <div className="relative w-6 h-6 overflow-hidden rounded-[4px]">
+                <Image
+                  src="/optiTimeLogo.jpeg"
+                  alt="OptiTime Logo"
+                  fill
+                  className="object-cover"
+                />
+              </div>
               OptiTime
-            </p>
+            </div>
             <p className="mt-5 text-sm leading-7 text-[var(--muted)]">
-              A dynamic scheduling engine for students and teams who need to plan
-              around real constraints, not idealized calendars. Protect your focus time automatically.
+              {copy.brandDescription}
             </p>
           </div>
 
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--muted)]">
-              Platform Features
+              {copy.featuresLabel}
             </p>
             <div className="mt-5 flex flex-col gap-4 text-sm text-[var(--ink)]">
-              {pageLinks.map((link) => (
+              {copy.pageLinks.map((link) => (
                 <Link
                   key={link.label}
                   className="transition-colors hover:text-[var(--accent)] w-max font-medium"
@@ -96,7 +142,7 @@ export function SiteFooter() {
 
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--muted)]">
-              Connect
+              {copy.connectLabel}
             </p>
             <div className="mt-5 flex flex-wrap gap-3">
               {socialLinks.map((social) => {
@@ -121,10 +167,10 @@ export function SiteFooter() {
         </div>
 
         <div className="mt-16 flex flex-col gap-4 border-t border-[var(--line)] pt-8 text-sm text-[var(--muted)] md:flex-row md:items-center md:justify-between">
-          <p>© 2026 OptiTime Inc. Defending schedules everywhere.</p>
+          <p>{copy.copyright}</p>
           <div className="flex items-center gap-6 font-medium">
-            <Link href="/policy" className="hover:text-[var(--ink)] transition-colors">Privacy Policy</Link>
-            <Link href="/terms" className="hover:text-[var(--ink)] transition-colors">Terms of Service</Link>
+            <Link href="/policy" className="hover:text-[var(--ink)] transition-colors">{copy.privacy}</Link>
+            <Link href="/terms" className="hover:text-[var(--ink)] transition-colors">{copy.terms}</Link>
           </div>
         </div>
       </div>

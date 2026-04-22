@@ -1,4 +1,5 @@
 import type { FixedEvent, GenerateScheduleOutput, PlanningPreferences, Task } from "@/types/planning";
+import type { UserProfile } from "@/types/profile";
 import { sanitizePreferences, defaultPreferences } from "@/features/constraints/defaults";
 import { randomUUID } from "crypto";
 
@@ -7,6 +8,7 @@ type UserStore = {
   fixedEvents: Map<string, FixedEvent>;
   preferences: PlanningPreferences;
   lastSchedule: GenerateScheduleOutput | null;
+  profile: UserProfile;
 };
 
 const stores = new Map<string, UserStore>();
@@ -24,7 +26,12 @@ export function getOrCreateStore(userId: string): UserStore {
     tasks: new Map(),
     fixedEvents: new Map(),
     preferences: prefs,
-    lastSchedule: null
+    lastSchedule: null,
+    profile: {
+      fullName: "Demo User",
+      email: "demo@pulseplan.local",
+      mode: "dev"
+    }
   };
   stores.set(userId, fresh);
   return fresh;
@@ -80,7 +87,21 @@ export function setLastSchedule(userId: string, schedule: GenerateScheduleOutput
   getOrCreateStore(userId).lastSchedule = schedule;
 }
 
+export function getProfile(userId: string): UserProfile {
+  return getOrCreateStore(userId).profile;
+}
+
+export function updateProfile(userId: string, partial: Partial<UserProfile>): UserProfile {
+  const store = getOrCreateStore(userId);
+  store.profile = {
+    ...store.profile,
+    fullName: partial.fullName?.trim() || store.profile.fullName,
+    email: partial.email?.trim() || store.profile.email,
+    mode: partial.mode ?? store.profile.mode
+  };
+  return store.profile;
+}
+
 export function newId(): string {
   return randomUUID();
 }
-

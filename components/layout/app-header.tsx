@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 const appNavigation = [
   { label: "Home", href: "/" },
@@ -21,9 +22,14 @@ export function AppHeader({
     <header className="sticky top-0 z-50 border-b border-[var(--line)] bg-[rgba(255,255,255,0.82)] backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 md:px-6">
         <Link className="flex items-center gap-3" href="/">
-          <span className="flex h-10 w-10 items-center justify-center border border-[rgba(21,184,106,0.22)] bg-[rgba(21,184,106,0.08)] font-display text-sm font-semibold tracking-[-0.04em] text-[var(--accent-dark)]">
-            PP
-          </span>
+          <div className="relative h-10 w-10 overflow-hidden border border-[rgba(21,184,106,0.22)]">
+            <Image
+              src="/optiTimeLogo.jpeg"
+              alt="OptiTime Logo"
+              fill
+              className="object-cover"
+            />
+          </div>
           <div>
             <p className="font-display text-lg font-semibold tracking-[-0.05em] text-[var(--ink)]">
               OptiTime

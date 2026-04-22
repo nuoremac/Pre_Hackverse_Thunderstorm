@@ -4,32 +4,9 @@ import { useState, useEffect } from "react";
 import { MockPlanner } from "@/components/calendar/mock-planner";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
+import { useI18n } from "@/components/i18n/i18n-provider";
+import Image from "next/image";
 import { Zap, ShieldCheck, RefreshCw, BarChart2, CalendarDays } from "lucide-react";
-
-const focusWords = ["Deep Work.", "Team Syncs.", "Assignments.", "Life Habits."];
-
-const features = [
-  {
-    icon: <ShieldCheck className="w-6 h-6 text-[var(--accent-dark)]" />,
-    title: "Defend Your Time",
-    description: "Hard constraints ensure your classes, meetings, and habits are never paved over."
-  },
-  {
-    icon: <BrainCircuitIcon />,
-    title: "Smart Priorities",
-    description: "An algorithmic engine scores urgency so you always know what to tackle first."
-  },
-  {
-    icon: <RefreshCw className="w-6 h-6 text-[var(--accent-dark)]" />,
-    title: "Auto Rescheduling",
-    description: "Missed a session? The engine dynamically rebuilds your week to prevent logjams."
-  },
-  {
-    icon: <BarChart2 className="w-6 h-6 text-[var(--accent-dark)]" />,
-    title: "Prevent Overload",
-    description: "Feasibility checks warn you when tasks exceed your available free hours."
-  }
-];
 
 function BrainCircuitIcon() {
   return (
@@ -38,14 +15,91 @@ function BrainCircuitIcon() {
 }
 
 export default function Home() {
+  const { locale } = useI18n();
+  const copy =
+    locale === "fr"
+      ? {
+          focusWords: ["Travail profond.", "Synchronisations.", "Devoirs.", "Habitudes."],
+          heroTitle: "Automatisez votre planning pour",
+          heroDescription:
+            "OptiTime n'est pas une simple to-do list. Il place automatiquement vos tâches dans le calendrier, calcule leur priorité et rééquilibre votre semaine.",
+          heroButton: "Commencer gratuitement",
+          heroNote: "Rejoignez les étudiants et équipes qui protègent enfin leur temps.",
+          platformTitle: "Conçu pour équilibrer les charges en temps réel.",
+          platformDescription:
+            "Fini le déplacement manuel des blocs de calendrier. L'algorithme identifie votre temps libre, respecte vos limites et planifie la bonne tâche au bon moment.",
+          ctaTitle: "Votre planning doit travailler pour vous.",
+          ctaDescription:
+            "Structurez instantanément votre semaine sans perdre le contrôle de vos habitudes.",
+          ctaButton: "Lancer OptiTime",
+          features: [
+            {
+              icon: <ShieldCheck className="w-6 h-6 text-[var(--accent-dark)]" />,
+              title: "Protégez votre temps",
+              description: "Les contraintes fortes empêchent les cours, réunions et habitudes d'être écrasés."
+            },
+            {
+              icon: <BrainCircuitIcon />,
+              title: "Priorités intelligentes",
+              description: "Le moteur calcule l'urgence pour vous montrer quoi traiter en premier."
+            },
+            {
+              icon: <RefreshCw className="w-6 h-6 text-[var(--accent-dark)]" />,
+              title: "Replanification auto",
+              description: "Une session ratée ? L'algorithme reconstruit la semaine pour éviter les blocages."
+            },
+            {
+              icon: <BarChart2 className="w-6 h-6 text-[var(--accent-dark)]" />,
+              title: "Évitez la surcharge",
+              description: "Les contrôles de faisabilité préviennent quand la charge dépasse vos heures libres."
+            }
+          ]
+        }
+      : {
+          focusWords: ["Deep Work.", "Team Syncs.", "Assignments.", "Life Habits."],
+          heroTitle: "Automate your schedule for",
+          heroDescription:
+            "OptiTime isn't a to-do list. It automatically slots tasks into your calendar, scores their priority, and dynamically rebalances your week, all so you get your focus time back.",
+          heroButton: "Start completely free",
+          heroNote: "Join busy students and teams protecting their time.",
+          platformTitle: "Built to balance workloads in real-time.",
+          platformDescription:
+            "Say goodbye to manually shuffling calendar blocks. Our algorithm identifies your free time, respects your hard limits, and schedules the exact right task for the exact right moment.",
+          ctaTitle: "Your schedule should work for you.",
+          ctaDescription:
+            "Instantly structure your week mathematically without losing control of your habits.",
+          ctaButton: "Launch OptiTime",
+          features: [
+            {
+              icon: <ShieldCheck className="w-6 h-6 text-[var(--accent-dark)]" />,
+              title: "Defend Your Time",
+              description: "Hard constraints ensure your classes, meetings, and habits are never paved over."
+            },
+            {
+              icon: <BrainCircuitIcon />,
+              title: "Smart Priorities",
+              description: "An algorithmic engine scores urgency so you always know what to tackle first."
+            },
+            {
+              icon: <RefreshCw className="w-6 h-6 text-[var(--accent-dark)]" />,
+              title: "Auto Rescheduling",
+              description: "Missed a session? The engine dynamically rebuilds your week to prevent logjams."
+            },
+            {
+              icon: <BarChart2 className="w-6 h-6 text-[var(--accent-dark)]" />,
+              title: "Prevent Overload",
+              description: "Feasibility checks warn you when tasks exceed your available free hours."
+            }
+          ]
+        };
   const [wordIndex, setWordIndex] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setWordIndex((prev) => (prev + 1) % focusWords.length);
+      setWordIndex((prev) => (prev + 1) % copy.focusWords.length);
     }, 2500);
     return () => clearInterval(interval);
-  }, []);
+  }, [copy.focusWords.length]);
 
   return (
     <main id="top" className="relative overflow-hidden bg-[#FAFBFA]">
@@ -56,23 +110,23 @@ export default function Home() {
         <div className="mx-auto grid max-w-7xl gap-16 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
           <div className="reveal-up z-10">
             <h1 className="max-w-3xl font-display text-5xl font-bold leading-[1.05] tracking-tight text-[var(--ink)] md:text-7xl">
-              Automate your schedule for <br />
+              {copy.heroTitle} <br />
               <span className="text-[var(--accent-dark)] transition-all duration-300">
-                 {focusWords[wordIndex]}
+                 {copy.focusWords[wordIndex]}
               </span>
             </h1>
 
             <p className="mt-8 max-w-xl text-lg leading-relaxed text-[var(--muted)]">
-              OptiTime isn't a to-do list. It automatically slots tasks into your calendar, scores their priority, and dynamically rebalances your week—all so you get your focus time back.
+              {copy.heroDescription}
             </p>
 
             <div className="mt-10 flex flex-col sm:flex-row gap-4">
               <a className="btn-primary flex items-center justify-center gap-2 shadow-[0_10px_30px_rgba(21,184,106,0.3)] hover:shadow-[0_15px_40px_rgba(21,184,106,0.4)] transition-all hover:-translate-y-1 py-4 px-8 text-lg rounded-xl" href="/planner">
-                <CalendarDays className="w-5 h-5" /> Start completely free
+                <CalendarDays className="w-5 h-5" /> {copy.heroButton}
               </a>
             </div>
             
-            <p className="mt-5 text-sm text-[var(--muted)] font-medium">Join busy students and teams protecting their time.</p>
+            <p className="mt-5 text-sm text-[var(--muted)] font-medium">{copy.heroNote}</p>
           </div>
 
           <div className="reveal-up delay-1 perspective-1000">
@@ -87,15 +141,15 @@ export default function Home() {
       <section id="platform" className="section-shell pt-16 md:pt-24 border-t border-[rgba(21,184,106,0.1)] bg-white">
         <div className="mx-auto max-w-7xl text-center reveal-up">
            <h2 className="font-display text-4xl font-bold tracking-tight text-[var(--ink)] md:text-5xl mb-6">
-             Built to balance workloads in real-time.
+             {copy.platformTitle}
            </h2>
            <p className="mx-auto max-w-2xl text-lg text-[var(--muted)] mb-16">
-             Say goodbye to manually shuffling calendar blocks. Our algorithm identifies your free time, respects your hard limits, and schedules the exact right task for the exact right moment.
+             {copy.platformDescription}
            </p>
         </div>
 
         <div className="mx-auto grid max-w-6xl gap-8 sm:grid-cols-2 lg:grid-cols-4 reveal-up delay-2">
-          {features.map((feature) => (
+          {copy.features.map((feature) => (
             <div key={feature.title} className="bg-[#fafbfa] p-8 rounded-3xl border border-[var(--line)] shadow-sm hover:shadow-md transition-shadow hover:bg-white hover:border-[rgba(21,184,106,0.2)]">
               <div className="w-12 h-12 bg-green-50 rounded-2xl flex items-center justify-center mb-6 border border-green-100">
                 {feature.icon}
@@ -114,13 +168,21 @@ export default function Home() {
          <div className="mx-auto max-w-4xl text-center reveal-up bg-[var(--ink)] text-white p-12 md:p-16 rounded-[2.5rem] shadow-2xl relative overflow-hidden">
             <div className="absolute top-[-50%] left-[-10%] w-96 h-96 bg-[var(--accent)] rounded-full blur-[100px] opacity-20 pointer-events-none"></div>
             <h2 className="font-display text-4xl font-semibold tracking-tight md:text-5xl mb-6 relative z-10">
-              Your schedule should work for you.
+              {copy.ctaTitle}
             </h2>
             <p className="text-lg text-gray-300 mb-10 max-w-xl mx-auto relative z-10">
-              Instantly structure your week mathematically without losing control of your habits.
+              {copy.ctaDescription}
             </p>
-            <a className="btn-primary bg-white text-[var(--ink)] hover:bg-[var(--accent)] hover:text-white border-2 border-white transition-all text-lg px-8 py-4 px-10 relative z-10 inline-flex items-center gap-2" href="/planner">
-              Launch OptiTime
+            <a className="btn-primary bg-white text-[var(--ink)] hover:bg-[var(--accent)] hover:text-white border-2 border-white transition-all text-lg px-8 py-4 px-10 relative z-10 inline-flex items-center gap-3" href="/planner">
+              <div className="relative w-6 h-6 overflow-hidden rounded-[4px]">
+                <Image
+                  src="/optiTimeLogo.jpeg"
+                  alt="OptiTime Logo"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              {copy.ctaButton}
             </a>
          </div>
       </section>

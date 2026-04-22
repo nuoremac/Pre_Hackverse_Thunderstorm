@@ -4,14 +4,29 @@ import { ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Settings, Mail } from "lucide-react";
-
-const NAV_ITEMS = [
-  { label: "General", href: "/settings", icon: Settings },
-  { label: "Emails", href: "/settings/emails", icon: Mail },
-];
+import { useI18n } from "@/components/i18n/i18n-provider";
 
 export default function SettingsLayout({ children }: { children: ReactNode }) {
+  const { locale } = useI18n();
   const pathname = usePathname();
+  const copy =
+    locale === "fr"
+      ? {
+          title: "Paramètres",
+          subtitle: "Gérez votre compte, vos préférences de planification et vos intégrations.",
+          navItems: [
+            { label: "Général", href: "/settings", icon: Settings },
+            { label: "Emails", href: "/settings/emails", icon: Mail }
+          ]
+        }
+      : {
+          title: "Settings",
+          subtitle: "Manage your account, scheduling preferences, and integrations.",
+          navItems: [
+            { label: "General", href: "/settings", icon: Settings },
+            { label: "Emails", href: "/settings/emails", icon: Mail }
+          ]
+        };
 
   return (
     <div className="min-h-full flex flex-col font-sans">
@@ -19,12 +34,12 @@ export default function SettingsLayout({ children }: { children: ReactNode }) {
       <div className="sticky top-0 z-20 bg-[var(--canvas-deep)]/80 backdrop-blur-md border-b border-[var(--line)] px-8 md:px-10 py-6">
         <div className="max-w-[1000px] mx-auto flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
-            <h1 className="text-3xl font-display font-bold text-[var(--ink)] tracking-tight">Settings</h1>
-            <p className="text-sm text-[var(--muted)] mt-1">Manage your account, scheduling preferences, and integrations.</p>
+            <h1 className="text-3xl font-display font-bold text-[var(--ink)] tracking-tight">{copy.title}</h1>
+            <p className="text-sm text-[var(--muted)] mt-1">{copy.subtitle}</p>
           </div>
           
           <nav className="flex gap-1 p-1 bg-white/50 border border-[var(--line)] rounded-xl">
-            {NAV_ITEMS.map((item) => {
+            {copy.navItems.map((item) => {
               const isActive = pathname === item.href;
               const Icon = item.icon;
               return (
